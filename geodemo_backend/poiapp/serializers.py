@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework.fields import JSONField
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 from geodemo_backend.poiapp.models import Plugin, Story, Genre, POI
 
@@ -31,7 +32,7 @@ class NestedPOISerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = POI
-        fields = ('url', 'slug', 'title', 'description', 'plugin', 'metadata', 'mpoint')
+        fields = ('url', 'id', 'slug', 'title', 'description', 'plugin', 'metadata', 'mpoint')
         # lookup_field = 'slug'
 
 
@@ -53,22 +54,18 @@ class POISerializer(serializers.HyperlinkedModelSerializer):
         # lookup_field = 'slug'
 
 
+# class POISerializer(GeoFeatureModelSerializer):
+#     class Meta:
+#         model = POI
+#         geo_field = 'mpoint'
+#         id_field = 'slug'
+#         auto_bbox = True
+#         # fields = ('url', 'title', 'description')
+
+
 class StorySerializer(serializers.ModelSerializer):
     pois = NestedPOISerializer(many=True)
     class Meta:
         model = Story
         lookup_field = 'slug'
         fields = ('url', 'slug', 'title', 'description', 'pois')
-
-# from rest_framework_gis.serializers import GeoFeatureModelSerializer
-
-# from geodemo_backend.poiapp.models import POI
-
-
-# class POISerializer(GeoFeatureModelSerializer):
-#     class Meta:
-#         model = POI
-#         geo_field = 'mpoly'
-#         id_field = 'slug'
-#         auto_bbox = True
-#         # fields = ('url', 'title', 'description')
