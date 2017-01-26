@@ -23,6 +23,7 @@ class Plugin(TitleSlugDescriptionModel, TimeStampedModel, models.Model):
 
 
 class Story(TitleSlugDescriptionModel, TimeStampedModel, models.Model):
+    genre = models.ForeignKey(Genre, related_name='pois', blank=True, null=True)
 
     def __str__(self):              # __unicode__ on Python 2
         return self.slug
@@ -39,7 +40,6 @@ class POI(TitleSlugDescriptionModel, TimeStampedModel, models.Model):
     # overriding the default manager with a GeoManager instance.
     mpoint = models.PointField(blank=True, null=True)
     objects = models.GeoManager()
-    genre = models.ForeignKey(Genre, related_name='pois')
     story = models.ManyToManyField('Story', related_name='pois') #, through='StoryPOI')
     plugin = models.ForeignKey('Plugin', related_name='pois')
     metadata = JSONField(blank=True, null=True)

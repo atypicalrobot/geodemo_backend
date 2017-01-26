@@ -16,20 +16,20 @@ class PluginFilter(filters.FilterSet):
         fields = {'slug': ['contains'], 'title': ['contains'], 'description': ['contains']}
 
 
-class StoryFilter(filters.FilterSet):
-    class Meta:
-        model = Story
-        fields = {'slug': ['contains'], 'title': ['contains'], 'description': ['contains']}
-
-
 class GenreFilter(filters.FilterSet):
     class Meta:
         model = Genre
         fields = {'slug': ['contains'], 'title': ['contains'], 'description': ['contains']}
 
 
-class POIFilter(filters.FilterSet):
+class StoryFilter(filters.FilterSet):
     genre = filters.RelatedFilter(GenreFilter, name='genre')
+    class Meta:
+        model = Story
+        fields = {'slug': ['contains'], 'title': ['contains'], 'description': ['contains']}
+
+
+class POIFilter(filters.FilterSet):
     story = filters.RelatedFilter(StoryFilter, name='story')
     class Meta:
         model = POI
