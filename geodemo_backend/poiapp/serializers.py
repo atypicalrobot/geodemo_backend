@@ -18,18 +18,21 @@ class NestedPluginSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('slug', 'url')
 
 
-class StorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Story
-        lookup_field = 'slug'
-        # fields = ('url', 'title', 'description')
-
-
 class NestedStorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Story
         lookup_field = 'slug'
         fields = ('slug', 'url')
+
+
+class NestedPOISerializer(serializers.HyperlinkedModelSerializer):
+    plugin = NestedPluginSerializer()
+    metadata = JSONField()
+
+    class Meta:
+        model = POI
+        fields = ('url', 'slug', 'title', 'description', 'plugin', 'metadata', 'mpoint')
+        # lookup_field = 'slug'
 
 
 class GenreSerializer(serializers.HyperlinkedModelSerializer):
@@ -49,6 +52,13 @@ class POISerializer(serializers.HyperlinkedModelSerializer):
         # fields = ('url', 'title', 'description')
         # lookup_field = 'slug'
 
+
+class StorySerializer(serializers.ModelSerializer):
+    pois = NestedPOISerializer(many=True)
+    class Meta:
+        model = Story
+        lookup_field = 'slug'
+        fields = ('url', 'slug', 'title', 'description', 'pois')
 
 # from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
