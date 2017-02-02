@@ -1,4 +1,9 @@
-from django.contrib.gis.db import models
+from django.db import models
+
+from djgeojson.fields import PointField
+
+from jsonfield import JSONField
+
 from django.contrib.postgres.fields import JSONField
 
 from django.core.exceptions import ValidationError
@@ -38,8 +43,7 @@ class POI(TitleSlugDescriptionModel, TimeStampedModel, models.Model):
 
     # GeoDjango-specific: a geometry field (MultiPolygonField), and
     # overriding the default manager with a GeoManager instance.
-    mpoint = models.PointField(blank=True, null=True)
-    objects = models.GeoManager()
+    mpoint = PointField(blank=True, null=True)
     story = models.ManyToManyField('Story', related_name='pois') #, through='StoryPOI')
     plugin = models.ForeignKey('Plugin', related_name='pois')
     metadata = JSONField(blank=True, null=True)
