@@ -37,7 +37,6 @@ class Common(Configuration):
         'django.contrib.postgres',
         'django.contrib.staticfiles',
 
-        'jsonfield',
         'djgeojson',
 
        #  'django.contrib.gis',
